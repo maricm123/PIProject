@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +33,22 @@ public class PreduzeceController {
 	public ResponseEntity<PreduzeceDTO> getPreduzece(@PathVariable("id") Integer id) throws Exception{
 		
 		return ResponseEntity.ok().body(preduzeceService.findById(id));
+	}
+	@PostMapping
+	public ResponseEntity<PreduzeceDTO> addPreduzece(@RequestBody PreduzeceDTO preduzeceDTO){
+		
+		return ResponseEntity.ok().body(preduzeceService.save(preduzeceDTO));
+	}
+	
+	@PutMapping(value = "/{id}", consumes = "application/json")
+	public ResponseEntity<PreduzeceDTO> updatePreduzece(@RequestBody PreduzeceDTO preduzeceDTO, @PathVariable("id") Integer id) throws Exception{
+		
+		return ResponseEntity.ok().body(preduzeceService.update(id, preduzeceDTO));
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deletePreduzece(@PathVariable("id") Integer id){
+		preduzeceService.remove(id);
+		return  ResponseEntity.noContent().build();
 	}
 }
